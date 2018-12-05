@@ -1,0 +1,24 @@
+﻿@page "/testapi"
+@inject HttpClient Http
+
+<h1>Testing API</h1>
+<p>This component demonstrates fetching data from the server.</p>
+
+@if ( _apiVersion == null )
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>@_apiVersion</p>
+}
+
+@functions 
+{
+    string _apiVersion = null;
+
+    protected override async Task OnInitAsync()
+    {
+        _apiVersion = await Http.GetJsonAsync<string>( "http://localhost:5001/" );
+    }
+}
