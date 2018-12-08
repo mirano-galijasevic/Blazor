@@ -13,12 +13,12 @@ else
     <p>@_apiVersion</p>
 }
 
-@functions 
+@functions
 {
     string _apiVersion = null;
 
     protected override async Task OnInitAsync()
     {
-        _apiVersion = await Http.GetJsonAsync<string>( "http://localhost:5001/" );
+        _apiVersion = await Http.GetStringAsync( "http://localhost:5000" );
     }
 }

@@ -17,6 +17,18 @@ namespace Blazor.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices( IServiceCollection services )
         {
+            services.AddCors( options =>
+            {
+                options.AddPolicy( "MyCorsPolicy",
+                    policyBuilder =>
+                    {
+                        policyBuilder
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                            .WithOrigins( "http://localhost:2059" );
+                    } );
+            } );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -27,6 +39,7 @@ namespace Blazor.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors( "MyCorsPolicy" );
             app.UseOwin( x =>
             {
                 x.UseNancy( options => options.Bootstrapper = new MyNancyBootstrapper() );

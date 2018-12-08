@@ -58,7 +58,8 @@ namespace Blazor.API.Weather
             }
             catch ( Exception ex )
             {
-                string s = ex.ToString();
+                //TODO: log this...for now we only diplay it in the command windows
+                Console.WriteLine( ex.ToString() );
             }
 
             return new Response
@@ -108,7 +109,8 @@ namespace Blazor.API.Weather
             }
             catch ( Exception ex )
             {
-                throw new Exception( "Error in UnpackResult()", ex );
+                //TODO: log this...for now we only diplay it in the command windows
+                Console.WriteLine( ex.ToString() );
             }
 
             return result;
