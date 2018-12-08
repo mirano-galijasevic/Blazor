@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
+using Nancy.Owin;
+
 namespace Blazor.API
 {
     public class Startup
@@ -25,10 +27,10 @@ namespace Blazor.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run( async ( context ) =>
-             {
-                 await context.Response.WriteAsync( "Hello World!" );
-             } );
+            app.UseOwin( x =>
+            {
+                x.UseNancy( options => options.Bootstrapper = new MyNancyBootstrapper() );
+            } );
         }
     }
 }
