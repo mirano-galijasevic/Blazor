@@ -4,38 +4,65 @@
 <h1>Weather Forecast</h1>
 <p>This component demonstrates getting a weather forecast.</p>
 
-<button class="btn btn-primary" onclick="@GetWeatherForecast">
-    Get Forecast
-</button>
+<p>
+    <label>City name:</label>
+    <input type="text" bind="@_city" />
+</p>
+<p>
+    <button class="btn btn-primary" onclick="@GetWeatherForecast">
+        Get Forecast
+    </button>
+</p>
 
-@if ( _weatherForecastData == null )
+@if ( _weatherForecastData != null )
 {
-    <p><em>Loading...</em></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Pressure (hPa)</th>
+                <th>Humidity (%)</th>
+                <th>Weather</th>
+                <th>Clouds (%)</th>
+                <th>Wind (m/s)</th>
+                <th>Rain (mm/3h)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ( var forecast in _weatherForecastData )
+            {
+                <tr>
+                    <td>@forecast.Date</td>
+                    <td>@forecast.Temp</td>
+                    <td>@forecast.Pressure</td>
+                    <td>@forecast.Humidity</td>
+                    <td>@forecast.Weather</td>
+                    <td>@forecast.Clouds</td>
+                    <td>@forecast.Wind</td>
+                    <td>@forecast.Rain</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-else
-{
-    <p>@_weatherForecastData.</p>
-}
+
 
 @functions
 {
-    string _weatherForecastData = null;
+    string _city = null;
+    string _data = null;
+    List<WeatherForecastData> _weatherForecastData = null;
 
     async Task GetWeatherForecast( UIMouseEventArgs args )
     {
-        var result = await Http.GetAsync( "http://localhost:5000/weather/London" );
+        var result = await Http.GetAsync( $"http://localhost:5000/weather/{_city}" );
 
         if ( result.StatusCode == System.Net.HttpStatusCode.OK )
         {
-            _weatherForecastData = await result.Content.ReadAsStringAsync();
-
-            if ( null != _weatherForecastData )
-            {
-                var data = JObject.Parse( _weatherForecastData );
-
-            }
+            _data = await result.Content.ReadAsStringAsync();
+            _weatherForecastData =
+                JsonConvert.DeserializeObject<List<WeatherForecastData>>( _data );
         }
-        else
-            _weatherForecastData = "FALSE";
     }
 }

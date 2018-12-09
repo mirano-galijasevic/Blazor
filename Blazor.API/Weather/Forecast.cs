@@ -54,7 +54,9 @@ namespace Blazor.API.Weather
             try
             {
                 var response = await request.GetResponseAsync();
-                result = UnpackResult( ( HttpWebResponse )response );
+
+                WeatherForecastResult foreacastResult = new WeatherForecastResult( ( HttpWebResponse )response );
+                result = foreacastResult.ParseResult();
             }
             catch ( Exception ex )
             {
@@ -74,46 +76,6 @@ namespace Blazor.API.Weather
                     }
                 }
             };
-        }
-
-        /// <summary>
-        /// Unpack the response stream
-        /// </summary>
-        /// <param name="response"></param>
-        /// <returns></returns>
-        private string UnpackResult( HttpWebResponse response )
-        {
-            string result = null;
-
-            try
-            {
-                Stream stream = response.GetResponseStream();
-
-                if ( stream != null )
-                {
-                    StreamReader sr = new StreamReader( stream );
-
-                    if ( sr != null )
-                    {
-                        result = sr.ReadToEnd();
-
-                        sr.Close();
-                        sr.Dispose();
-                    }
-
-                    stream.Close();
-                    stream.Dispose();
-                }
-
-                response.Dispose();
-            }
-            catch ( Exception ex )
-            {
-                //TODO: log this...for now we only diplay it in the command windows
-                Console.WriteLine( ex.ToString() );
-            }
-
-            return result;
         }
     }
 }
