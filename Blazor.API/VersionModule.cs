@@ -4,9 +4,9 @@ using Nancy;
 
 namespace Blazor.API
 {
-    public class Version : NancyModule
+    public class VersionModule : NancyModule
     {
-        public Version()
+        public VersionModule()
         {
             Get("/", _ => "Blazor.API v. 1.0"); 
         }
