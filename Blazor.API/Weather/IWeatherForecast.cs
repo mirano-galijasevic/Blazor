@@ -7,6 +7,6 @@ namespace Blazor.API.Weather
 {
     public interface IWeatherForecast
     {
-        Task<dynamic> DoForecast( WeatherForecastModel model );
+        Task<dynamic> DoForecast( string model );
     }
 }

@@ -40,10 +40,10 @@ namespace Blazor.API.Weather
         /// </summary>
         /// <param name="cityName"></param>
         /// <returns></returns>
-        public async Task<dynamic> DoForecast( WeatherForecastModel model )
+        public async Task<dynamic> DoForecast( string city )
         {
             StringBuilder address = new StringBuilder( _apiAddressRoot );
-            address.Append( $"?q={model.City}&APPID={_apiKey}&units=metric" );
+            address.Append( $"?q={city}&APPID={_apiKey}&units=metric" );
             
             HttpWebRequest request = ( HttpWebRequest )WebRequest.Create( address.ToString() );
             request.Method = "GET";

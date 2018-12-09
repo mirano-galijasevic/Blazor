@@ -1,0 +1,41 @@
+@page "/weather"
+@inject HttpClient Http
+
+<h1>Weather Forecast</h1>
+<p>This component demonstrates getting a weather forecast.</p>
+
+<button class="btn btn-primary" onclick="@GetWeatherForecast">
+    Get Forecast
+</button>
+
+@if ( _weatherForecastData == null )
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>@_weatherForecastData.</p>
+}
+
+@functions
+{
+    string _weatherForecastData = null;
+
+    async Task GetWeatherForecast( UIMouseEventArgs args )
+    {
+        var result = await Http.GetAsync( "http://localhost:5000/weather/London" );
+
+        if ( result.StatusCode == System.Net.HttpStatusCode.OK )
+        {
+            _weatherForecastData = await result.Content.ReadAsStringAsync();
+
+            if ( null != _weatherForecastData )
+            {
+                var data = JObject.Parse( _weatherForecastData );
+
+            }
+        }
+        else
+            _weatherForecastData = "FALSE";
+    }
+}
